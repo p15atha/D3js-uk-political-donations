@@ -1,384 +1,303 @@
-body {
-    background-color: #ffffff;
-    font-family:'Raleway', 'Open Sans', sans-serif;
-}
-p {
-    margin: 5px 0;
-    -webkit-transition: all 0.1s ease-out;
-}
+<!doctype html>
+<html>
 
-/*h1,h2,h3,h4,h5,p,strong,a, pre
- evala functionality gia zoom */
- 
- /*Otan ginete hover tu mouse panw apo to sygkekrimeno element (px h1,p...) 
-  *Tote orizw to xrwma se kitrino
-  *Vazw perigramma gyrw apo to kathe gramma thetontas tis rythmhseis text-shadow:
-  *To kanw gia na ksexwrizw ta grammata me to background
-  *
-  *Epishs gia to zoom out thetw kathe element me transition 0.1 deuterolepton ease-out
-  */
-h1 {
-  display: inline-block;
-  -webkit-transition: all 0.1s ease-out;
-}
+<head>
 
-h1:hover {
-  color: yellow;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  cursor: pointer;
-  -webkit-transform: scale(1.5);
-}
-
-
-h2 {
-  display: inline-block;
-  -webkit-transition: all 0.1s ease-out;
-}
-
-h2:hover {
-  color: yellow;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  cursor: pointer;
-  -webkit-transform: scale(1.5);
-}
-
-
-h3 {
-  display: inline-block;
-  -webkit-transition: all 0.1s ease-out;
-}
-
-h3:hover {
-  color: yellow;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  cursor: pointer;
-  -webkit-transform: scale(1.5);
-}
-
-
-h4 {
-  display: inline-block;
-  -webkit-transition: all 0.1s ease-out;
-}
-
-h4:hover {
-  color: yellow;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  cursor: pointer;
-  -webkit-transform: scale(1.5);
-}
-
-
-h5 {
-  display: inline-block;
-  -webkit-transition: all 0.1s ease-out;
-}
-
-h5:hover {
-  color: yellow;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  cursor: pointer;
-  -webkit-transform: scale(1.5);
-}
-
-pre:hover {
-  color: yellow;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  cursor: pointer;
-  -webkit-transform: scale(1.5);
-}
-
-p:hover {
-  color: yellow;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  cursor: pointer;
-  -webkit-transform: scale(1.5);
-}
-
-
-strong {
-  display: inline-block;
-  -webkit-transition: all 0.1s ease-out;
-}
-
-strong:hover {
-  color: yellow;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  cursor: pointer;
-  -webkit-transform: scale(1.5);
-}
-
-a {
-  display: inline-block;
-  -webkit-transition: all 0.1s ease-out;
-}
-
-a:hover {
-  color: yellow;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  cursor: pointer;
-  -webkit-transform: scale(1.5);
-}
-
-
-strong {
-    font-weight: 700;
-}
-h1, h2, h3, h4, h5 {
-    margin: 10px 0 15px 0;
-}
-header, nav {
-    text-align: center;
-    min-width: 767px;
-}
-li {
-    display: inline;
-}
-
-/* 	Information boxes for different chart layouts */
-/* Positioning */
-#initial-content, #a, #b, #c, #d, #e, #f, #view-by-amount, #enormous, #huge, #large, #normal, #minor,#view-party-type, #view-donor-type, #view-source-type, #partyInfo, #conservative, #labour, #libdem, #individual, #company, #union, #society, #other, #public-or-private-money, #public-or-private-money-split, #private-money, #public-money { 
-    position: absolute; 
-}
-
-/* Initial appearance on load */
-#view-party-type, #view-donor-type, #view-source-type, #view-by-amount {
-    display: none;
-}
-
-/* View containers */
-#initial-content, #view-source-type {
-    left: 650px;
-    width: 400px;
-}
-#view-party-type {
-    left: 650px;
-    width: 272px;
-}
-
-
-/*  Public or private funds view */
-
-#public-or-private-money {
-    max-width: 300px;
-}
-#public-or-private-money-split {
-    top: 550px;
-    left: -600px;
-    text-align: center;   
-}
-#private-money, #public-money {
-    width: 200px;
-}
-#private-money {
-    left: 200px;
-}
-#public-money {
-    left: 610px;
-}
-
-/*  Party view */
-#conservative, #labour, #libdem { padding: 10px; }
-#conservative {
-    background: rgba(255, 0, 0, 0.5);
-    top: 110px;
-}
-#labour {
-    background: rgba(0, 255 , 0, 1);
-    top: 330px;
-}
-#libdem {
-    background: rgba(0, 0, 255, 0.5);
-    top: 550px; 
-}
-
-/*	Donor type layout */
-#view-donor-type {
-    height: 100%;
-    left: 500px;
-    width: 370px;
+    <meta charset="utf-8">
+    <title>Who's funding the big three?</title>
+    <meta property="og:image" content="http://isthisjam.com.s3.amazonaws.com/img/bubble-img.png" />
+    <!-- 180x110 Image for Linkedin -->
+    <meta property="og:image:width" content="180" />
+    <meta property="og:image:height" content="110" />
+    <meta property="og:image" content="http://isthisjam.com.s3.amazonaws.com/img/bubble-img.png" />
+    <!-- 200x200 Image for Facebook -->
+    <meta property="og:image:width" content="200" />
+    <meta property="og:image:height" content="200" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,700|Raleway:400,700">
     
-}
-#individual {
-    top: 55px;
-}
-#company {
-    top: 390px;
-}
-#union {
-    top: 660px;
-}
-#society {
-    top: 205px;
-    text-align: right;
-    right: 0;
-}
-#other {
-    top: 530px;
-    text-align: right;
-    right: 0
-}
-/*Prosthikh twn thesewn olwn ton element tu Split By Amount*/
-/*type-a view layout*/
-#view-by-amount {
-    height: 100%;
-    left: 450px;
-    width: 370px;
-}
-#enormous {
-    top: 55px;
-}
-#huge {
-    top: 185px;
-    left: 30px;
-}
-#large {
-    top: 335px;
-    left: -40px;
-}
-#normal {
-    top: 470px;
-    left: 55px;
-}
-#minor {
-    top: 570px;
-    left: -55px;
-}
+    
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44807543-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    
+    
+</head>
+<!-- Add feature detection and noscript -->
+
+<body>
+    
+    <header role="banner" id="title">
+        
+        
+        <!-- ADDING AUDIO ID TAG -->
+        <audio id="button" src="buttonSound.mp3" preload="auto"></audio>
+        
+        
+        
+        <h1>Who's funding the big three?</h1>
+    </header>
+    <nav role="navigation">
+        <ul>
+            
+            <!-- ADDING ONCLICK TO PLAY SOUND -->
+            <li><a href="#" role="button" class="pure-button switch" id="all-donations" 
+            onclick = "document.getElementById('button').play();" >All money</a>
+            
+            </li>
+            <li><a href="#" role="button" class="pure-button switch" id="group-by-money-source"
+            onclick = "document.getElementById('button').play();" >The public's purse</a>
+            </li>
+            <li><a href="#" role="button" class="pure-button switch" id="group-by-party"
+            onclick = "document.getElementById('button').play();" >Split by party</a>
+            </li>
+            <li><a href="#" role="button" class="pure-button switch" id="group-by-donor-type"
+            onclick = "document.getElementById('button').play();" >Split by type of donor</a>
+            </li> <!--Prothetw kainourgio kumpi-->
+            <li><a href="#" role="button" class="pure-button switch" id="group-by-amount"
+            onclick = "document.getElementById('button').play();" >Split by amount</a>
+            </li>
+            
+        </ul>
+    </nav>
+
+    <div id="annotations">
+
+        <!-- Initial annotations -->
+        <div id="initial-content">
+            <h2>Political donations and funding accepted by the Conservatives, Labour and Liberal Democrats between the 2010 general election and August 2013, when this data was collected.</h2>
+            <p>Each circle represents the total amount donated by a single donor group, funding organisation or individual during that period.</p>
+            <p>Hover over a circle to show further information.</p>
+
+            <p>Get an immediate overview of how party funding is shaped in Britain today by selecting one of the options at the top of the page.</p>
+            <p>Data is based on all reportable donations over &#163;7500.</p>
+            <p>Data source: <a href="http://www.electoralcommission.org.uk/">The Electoral Commission.</a>
+            </p>
+        </div>
+        <div id="value-scale">
+            <div id="f">
+                <p>&#8212;UK average salary</p>
+            </div>
+            <div id="a">
+                <strong>&#163;25k &#8212;</strong>
+            </div>
+            <div id="b">
+                <strong>&#163;50k &#8212;</strong>
+            </div>
+            <div id="c">
+                <strong>&#163;100k &#8212;</strong>
+            </div>
+            <div id="d">
+                <strong>&#163;500k &#8212;</strong>
+            </div>
+            <div id="e">
+                <strong>&#163;1m &#8212;</strong>
+            </div>
+        </div>
+        <!-- End initial-->
+        
+      
+        <!-- Public or private money annotations -->
+        <div id="view-source-type">
+            <div id="public-or-private-money" class="public-private">
+                <h3>Public money vs private cash</h3>
+                <p>Despite general public opposition to more taxpayer moneAly being given to political parties, public funds are already provided to opposition parties in the form of 'short money' from the House of Commons, House of Lords and Scottish Parliament.</p>
+                <p>The parties also benefit from 'Policy development grants' given by the Electoral Commission.</p>
+            </div>
+            <div id="public-or-private-money-split" class="public-private">
+                <div id="private-money">
+                    <h5>Private Donations</h5>
+                    <strong>Total: &#163;89,752,524
+                        </strong>
+                            <p>Proportion of all donations:
+                                <strong>77%</strong>
+                            </p>
+                </div>
+                <div id="public-money">
+                    <h5>Public Funds</h5>
+                    <strong>Total: &#163;26,579,038
+                        </strong>
+                            <p>Proportion of all donations:
+                                <strong>23%</strong>
+                            </p>
+                </div>
+          </div>
+        </div>
+        <!-- End public or private money -->
+    
+        <div id="view-party-type">
+            <h3>Income for each party from private sources.</h3>
+            <div id="conservative">
+                <h5>Conservative Party</h5>
+                <strong>Total: &#163;43.7 million
+                    </strong>
+                        <p>Top 50 donors gave:
+                            <strong>&#163;23,329,828</strong>
+                            <br>
+                            <strong>50%</strong>of the total.</p>
+                        <p>Top 10 donors gave:
+                            <strong>&#163;12,877,989</strong>
+                            <br>
+                            <strong>27%</strong>of the total</p>
+            </div>
+            <div id="labour">
+                <h5>Labour Party</h5>
+                <strong>Total: &#163;38.9 million
+                    </strong>
+                        <p>Top 50 donors gave:
+                            <strong>&#163;39,196,684</strong>
+                            <br>
+                            <strong>92%</strong>of the total.</p>
+                        <p>Top 10 donors gave:
+                            <strong>&#163;34,715,877</strong>
+                            <br>
+                            <strong>81%</strong>of the total</p>
+            </div>
+            <div id="libdem">
+                <h5>Liberal Democrats</h5>
+                <strong>Total: &#163;7.1 million
+                    </strong>
+                        <p>Top 50 donors gave:
+                            <strong>&#163;6,975,973</strong>
+                            <br>
+                            <strong>63%</strong>of the total.</p>
+                        <p>Top 10 donors gave:
+                            <strong>&#163;4,823,899.71</strong>
+                            <br>
+                            <strong>43%</strong>of the total</p>
+            </div>
+        </div>
+        <!--view-by-amount annotations-->
+       
+        
+        
+        <div id="view-donor-type">
+            <div id="individual">
+                <h5>Individuals</h5>
+                <strong>Total: &#163; 35,191,222
+                    </strong>
+                        <p>Proportion of all donations:
+                            <strong>39%</strong>
+                        </p>
+            </div>
+            <div id="company">
+                <h5>Companies</h5>
+                <strong>Total: &#163; 17,052,129
+                    </strong>
+                        <p>Proportion of all donations:
+                            <strong>19%</strong>
+                        </p>
+            </div>
+            <div id="union">
+                <h5>Trade Unions</h5>
+                <strong>Total: &#163;31,474,649
+                    </strong>
+                        <p>Proportion of all donations:
+                            <strong>35%</strong>
+                        </p>
+            </div>
+            <div id="society">
+                <h5>Societies</h5>
+                <strong>Total: &#163;4,550,129
+                    </strong>
+                        <p>Proportion of all donations:
+                            <strong>5%</strong>
+                        </p>
+            </div>
+            <div id="other">
+                <h5>Others</h5>
+                <strong>Total: &#163; 1,484,395
+                    </strong>
+                        <p>Proportion of all donations:
+                            <strong>2%</strong>
+                        </p>
+            </div>
+        </div>
+        <!--Eisagwgh keimenu gia ta dedomena view by amount
+          --Ta pososta ta exw vrei me sql mesa apo to 7500.csv arxeio 
+          -->
+        <div id = "view-by-amount">
+         <div id="enormous">
+                <h5><strong><strong>15</strong> Enormous donations</strong></h5>
+               
+                    <!--Eisagwgh pre gia diathrhsh break line kai spacing-->
+                        <pre>Being: <strong>0.33%</strong> to Conservative 
+       <strong>0.60%</strong> to Labour
+       <strong>0.07%</strong> to Liberal
+                        </pre>
+        <div id="huge">
+                <h5><strong><strong>126</strong> Huge donations</strong></h5>
+               
+                    <!--Eisagwgh pre gia diathrhsh break line kai spacing-->
+                        <pre>Being: <strong>0.75%</strong> to Conservative 
+       <strong>0.13%</strong> to Labour
+       <strong>0.12%</strong> to Liberal
+                        </pre>
+         </div>
+        
+         
+         <div id="large">
+               <h5><strong><strong>100</strong> Large donations</strong></h5>
+               
+                    <!--Eisagwgh pre gia diathrhsh break line kai spacing-->
+                        <pre>Being: <strong>0.80%</strong> to Conservative 
+       <strong>0.13%</strong> to Labour
+       <strong>0.07%</strong> to Liberal
+                        </pre>
+         </div>
+        
+         
+         <div id="normal">
+                <h5><strong><strong>159</strong> Normal donations</strong></h5>
+               
+                    <!--Eisagwgh pre gia diathrhsh break line kai spacing-->
+                        <pre>Being: <strong>0.69%</strong> to Conservative 
+       <strong>0.21%</strong> to Labour
+       <strong>0.10%</strong> to Liberal
+                        </pre>
+         </div>
+         
+         
+         <div id="minor">
+                <h5><strong><strong>443</strong> Small donations</strong></h5>
+               
+                    <!--Eisagwgh pre gia diathrhsh break line kai spacing-->
+                        <pre>Being: <strong>0.67%</strong> to Conservative 
+       <strong>0.17%</strong> to Labour
+       <strong>0.16%</strong> to Liberal
+                        </pre>
+         </div> 
+         
+        </div>
+        
+        
+    </div>
+    <div id="chart"></div>
 
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+    window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')
+    </script>
+    
+    <!--adding library mespeak:  http://www.masswerk.at/mespeak/ </-->
+    <script src="mespeak/mespeak.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js" charset="utf-8"></script>
+    <script src="chart.js"></script>
+   
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   
+</body>
 
-
-/* Value scale */
-
-#value-scale {
-    opacity: 0.5;
-    font-size: 0.75em;
-}
-#a, #b, #c, #d, #e { left: 40px; }
-#a { top: 635px;}
-#b { top: 585px;}
-#c { top: 535px;}
-#d { top: 485px;}
-#e { top: 435px;}
-#f { top: 648px; left: 575px; }
-
-/* End of view */
-
-circle {
-    stroke: rgba(238, 238, 238, 1);
-    stroke-width: 0.5;
-}
-circle.active {
-    stroke: rgba(17, 17, 17, 0.8);
-    stroke-width: 5;
-}
-
-.legend circle {
-    stroke: #aabbcc;
-    stroke-width: 1;
-    fill: none;
-}
-.tooltip {
-    margin: 0;
-    padding: 5px;
-    line-height: 1.4;
-    display: none;
-    height: 125px;
-    width: 280px;
-    text-align: left;
-    border: 4px solid rgba(0, 0, 0, .8);
-    border-radius: 2px;
-    -moz-box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.5);
-    box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.5);
-    background-color: rgba(255, 255, 255, 1);
-    position: absolute;
-}
-.tooltip p, h3 {
-    margin: 0.2em;
-}
-.lab {
-    fill: #008000; /*change to green*/
-}
-.lib {
-    fill: #0000FF; /*change to blue*/
-}
-.con {
-    fill: #FF0000; /*change to red*/
-}
-.snp {
-    fill: #C9C945;
-}
-/*!
-Pure v0.2.1
-Copyright 2013 Yahoo! Inc. All rights reserved.
-Licensed under the BSD License.
-https://github.com/yui/pure/blob/master/LICENSE.md
-*/
-.pure-button {
-    /* Structure */
-    display: inline-block;
-    *display: inline;
-    /*IE 6/7*/
-    zoom: 1;
-    line-height: normal;
-    white-space: nowrap;
-    vertical-align: baseline;
-    text-align: center;
-    cursor: pointer;
-    -webkit-user-drag: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-/* Firefox: Get rid of the inner focus border */
-.pure-button::-moz-focus-inner {
-    padding: 0;
-    border: 0;
-}
-/*csslint unqualified-attributes:false, outline-none:false*/
-.pure-button {
-    font-size: 100%;
-    *font-size: 90%;
-    /*IE 6/7 - To reduce IE's oversized button text*/
-    *overflow: visible;
-    /*IE 6/7 - Because of IE's overly large left/right padding on buttons */
-    padding: 0.5em 1.5em 0.5em;
-    color: #444;
-    /* rgba not supported (IE 8) */
-    color: rgba(0, 0, 0, 0.8);
-    /* rgba supported */
-    *color: #444;
-    /* IE 6 & 7 */
-    border: 1px solid #999;
-    /*IE 6/7/8*/
-    border: none rgba(0, 0, 0, 0);
-    /*IE9 + everything else*/
-    background-color: #E6E6E6;
-    text-decoration: none;
-    border-radius: 2px;
-    -webkit-font-smoothing: antialiased;
-    /* Transitions */
-    -webkit-transition: 0.1s linear -webkit-box-shadow;
-    -moz-transition: 0.1s linear -moz-box-shadow;
-    -ms-transition: 0.1s linear box-shadow;
-    -o-transition: 0.1s linear box-shadow;
-    transition: 0.1s linear box-shadow;
-}
-.pure-button-hover, .pure-button:hover, .pure-button:focus {
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000', GradientType=0);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.10)));
-    background-image: -webkit-linear-gradient(transparent, rgba(0, 0, 0, 0.05) 40%, rgba(0, 0, 0, 0.10));
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.10));
-    background-image: -ms-linear-gradient(transparent, rgba(0, 0, 0, 0.05) 40%, rgba(0, 0, 0, 0.10));
-    background-image: -o-linear-gradient(transparent, rgba(0, 0, 0, 0.05) 40%, rgba(0, 0, 0, 0.10));
-    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.05) 40%, rgba(0, 0, 0, 0.10));
-}
-.pure-button:focus {
-    outline: 0;
-}
-.pure-button-active, .pure-button:active {
-    color: rgb(0, 120, 231);
-    color: #fff
-}
+</html>
