@@ -1,358 +1,281 @@
-// GLOBALS
-var w = 1000,h = 900;
-var padding = 2;
-var nodes = [];
-var force, node, data, maxVal;
-var brake = 0.2;
-var radius = d3.scale.sqrt().range([10, 20]);
+<!doctype html>
+<html>
 
-var partyCentres = { 
-    con: { x: w / 3, y: h / 3.3}, 
-    lab: {x: w / 3, y: h / 2.3}, 
-    lib: {x: w / 3	, y: h / 1.8}
-  };
+<head>
 
-var entityCentres = { 
-    company: {x: w / 3.65, y: h / 2.3},
-		union: {x: w / 3.65, y: h / 1.8},
-		other: {x: w / 1.15, y: h / 1.9},
-		society: {x: w / 1.12, y: h  / 3.2 },
-		pub: {x: w / 1.8, y: h / 2.8},
-		individual: {x: w / 3.65, y: h / 3.3},
-	};
+    <meta charset="utf-8">
+    <title>Who's funding the big three?</title>
+    <meta property="og:image" content="http://isthisjam.com.s3.amazonaws.com/img/bubble-img.png" />
+    <!-- 180x110 Image for Linkedin -->
+    <meta property="og:image:width" content="180" />
+    <meta property="og:image:height" content="110" />
+    <meta property="og:image" content="http://isthisjam.com.s3.amazonaws.com/img/bubble-img.png" />
+    <!-- 200x200 Image for Facebook -->
+    <meta property="og:image:width" content="200" />
+    <meta property="og:image:height" content="200" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,700|Raleway:400,700">
 
-var fill = d3.scale.ordinal().range(["#006400", "#fdff00", "#e71212"]);
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44807543-1']);
+    _gaq.push(['_trackPageview']);
 
-var svgCentre = { 
-    x: w / 3.6, y: h / 2
-  };
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</head>
+<!-- Add feature detection and noscript -->
 
-var svg = d3.select("#chart").append("svg")
-	.attr("id", "svg")
-	.attr("width", w)
-	.attr("height", h);
-
-var nodeGroup = svg.append("g");
-
-var tooltip = d3.select("#chart")
- 	.append("div")
-	.attr("class", "tooltip")
-	.attr("id", "tooltip");
-
-var comma = d3.format(",.0f");
-
-function transition(name) {
-	if (name === "all-donations") {
-		$("#initial-content").fadeIn(250);
-		$("#value-scale").fadeIn(1000);
-		$("#view-donor-type").fadeOut(250);
-		$("#view-source-type").fadeOut(250);
-		$("#view-party-type").fadeOut(250);
-		return total();
-		//location.reload();
-	}
-	if (name === "group-by-party") {
-		$("#initial-content").fadeOut(250);
-		$("#value-scale").fadeOut(250);
-		$("#view-donor-type").fadeOut(250);
-		$("#view-source-type").fadeOut(250);
-		$("#view-party-type").fadeIn(1000);
-		return partyGroup();
-	}
-	if (name === "group-by-donor-type") {
-		$("#initial-content").fadeOut(250);
-		$("#value-scale").fadeOut(250);
-		$("#view-party-type").fadeOut(250);
-		$("#view-source-type").fadeOut(250);
-		$("#view-donor-type").fadeIn(1000);
-		return donorType();
-	}
-	if (name === "group-by-money-source")
-		$("#initial-content").fadeOut(250);
-		$("#value-scale").fadeOut(250);
-		$("#view-donor-type").fadeOut(250);
-		$("#view-party-type").fadeOut(250);
-		$("#view-source-type").fadeIn(1000);
-		return fundsType();
-	}
-
-
-function start() {
-
-	node = nodeGroup.selectAll("circle")
-		.data(nodes)
-	.enter().append("circle")
-		.attr("class", function(d) { return "node " + d.party; })
-		.attr("amount", function(d) { return d.value; })
-		.attr("donor", function(d) { return d.donor; })
-		.attr("entity", function(d) { return d.entity; })
-		.attr("party", function(d) { return d.party; })
-		// disabled because of slow Firefox SVG rendering
-		// though I admit I'm asking a lot of the browser and cpu with the number of nodes
-		//.style("opacity", 0.9)
-		.attr("r", 0)
-		.style("fill", function(d) { return fill(d.party); })
-		.on("mouseover", mouseover)
-		.on("mouseout", mouseout)
-		.on("click", function(d) { window.open("http://www.google.com/search?q=" + d.donor);});
-		// Alternative title based 'tooltips'
-		// node.append("title")
-		//	.text(function(d) { return d.donor; });
-		//
-
- 
-	
-		force.gravity(0)
-			.friction(0.75)
-			.charge(function(d) { return -Math.pow(d.radius, 2) / 3; })
-			.on("tick", all)
-			.start();
-
-		node.transition()
-			.duration(2500)
-			.attr("r", function(d) { return d.radius; });
+<style type="text/css">
+/*Paradoteo3: It zooms a lot with a nice fx*/
+.zoom {
+   -webkit-transition: all .3s ease-out;
+   -moz-transition: all .3s ease-out;
+   -o-transition: all .3s ease-out;
+   transition: all .3s ease-out;
 }
-
-function total() {
-
-	force.gravity(0)
-		.friction(0.9)
-		.charge(function(d) { return -Math.pow(d.radius, 2) / 2.8; })
-		.on("tick", all)
-		.start();
+.zoom:hover {
+   -moz-transform: scale(1.6);
+   -webkit-transform: scale(1.6);
+   -o-transform: scale(1.6);
+   transform: scale(1.6);
+   -ms-transform: scale(1.6);
+filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+   M11=2, M12=-0, M21=0, M22=2);}
+   
+   /* Paradoteo3: It zooms a little bit with a nice fx and it doesn't move the text at left side. It's also useful for buttons, so that they wont be moved.*/
+   .zoom2 {
+   -webkit-transition: all .3s ease-out;
+   -moz-transition: all .3s ease-out;
+   -o-transition: all .3s ease-out;
+   transition: all .3s ease-out;
 }
-
-function partyGroup() {
-	force.gravity(0)
-		.friction(0.8)
-		.charge(function(d) { return -Math.pow(d.radius, 2.0) / 3; })
-		.on("tick", parties)
-		.start()
-		.colourByParty();
+   .zoom2:hover {
+   -moz-transform: scale(1.3);
+   -webkit-transform: scale(1.3);
+   -o-transform: scale(1.3);
+   transform: scale(1.3);
+   -ms-transform: scale(1.3);
+filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+   M11=2, M12=-0, M21=0, M22=2);   
+   }
+/* Paradoteo3: It zooms a lot with a nice fx and it moves text at left, or there may be collisions with the colored circles/node*/
+    .zoom3 {
+   -webkit-transition: all .3s ease-out;
+   -moz-transition: all .3s ease-out;
+   -o-transition: all .3s ease-out;
+   transition: all .3s ease-out;
 }
+.zoom3:hover {
+    padding-left: 30px;
+   -moz-transform: scale(1.6);
+   -webkit-transform: scale(1.6);
+   -o-transform: scale(1.6);
+   transform: scale(1.6);
+   -ms-transform: scale(1.6);
+filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+   M11=2, M12=-0, M21=0, M22=2);}
+    
+</style>
 
-function donorType() {
-	force.gravity(0)
-		.friction(0.8)
-		.charge(function(d) { return -Math.pow(d.radius, 2.0) / 3; })
-		.on("tick", entities)
-		.start();
-}
+<body>
+<!-- Paradoteo3: On buttons i put "<p>" inside the "<a>" so that i will put it in zoom2 class. If i put class=zoom2 at <li> it wont work. Same for <a>.-->
+    <header role="banner" id="title">
+        <h1 class=zoom2>Who's funding the big three?</h1> 
+    </header> 
+    <nav role="navigation">
+        <ul>
+            <li><a href="#" role="button" class="pure-button switch" id="all-donations"> <p class=zoom2> All money </p> </a>
+            </li>
+            <li><a href="#" role="button" class="pure-button switch" id="group-by-money-source"> <p class=zoom2> The public's purse </p> </a>
+            </li>
+            <li><a href="#" role="button" class="pure-button switch" id="group-by-party"> <p class=zoom2> Split by party </p> </a>
+            </li>
+            <li><a href="#" role="button" class="pure-button switch" id="group-by-donor-type"> <p class=zoom2> Split by type of donor </p> </a>
+            </li>
+            <!--Paradoteo3: new split by--> 
+            <li><a href="#" role="button" class="pure-button switch" id="group-by-amount"> <p class=zoom2> Split by the amount of donor </p> </a>
+            </li>
+        </ul>
+    </nav>
 
-function fundsType() {
-	force.gravity(0)
-		.friction(0.75)
-		.charge(function(d) { return -Math.pow(d.radius, 2.0) / 3; })
-		.on("tick", types)
-		.start();
-}
+    <div id="annotations">
 
-function parties(e) {
-	node.each(moveToParties(e.alpha));
+        <!-- Initial annotations -->
+        <div id="initial-content">
+            <h2 class=zoom2>Political donations and funding accepted by the Conservatives, Labour and Liberal Democrats between the 2010 general election and August 2013, when this data was collected.</h2>
+            <p class=zoom3 >Each circle represents the total amount donated by a single donor group, funding organisation or individual during that period.</p>
+            <p class=zoom3 >Hover over a circle to show further information.</p>
 
-		node.attr("cx", function(d) { return d.x; })
-			.attr("cy", function(d) {return d.y; });
-}
+            <p class=zoom3 >Get an immediate overview of how party funding is shaped in Britain today by selecting one of the options at the top of the page.</p>
+            <p class=zoom3 >Data is based on all reportable donations over &#163;7500.</p>
+            <p class=zoom3 >Data source: <a href="http://www.electoralcommission.org.uk/">The Electoral Commission.</a>
+            </p>
+        </div>
+        <div id="value-scale">
+            <div id="f">
+                <p class=zoom> &#8212;UK average salary </p>
+            </div>
+            <div id="a">
+                <p class=zoom> <strong>&#163;25k &#8212;</strong> </p>
+            </div>
+            <div id="b">
+                <p class=zoom> <strong>&#163;50k &#8212;</strong> </p>
+            </div>
+            <div id="c">
+                <p class=zoom> <strong>&#163;100k &#8212;</strong> </p>
+            </div>
+            <div id="d">
+                <p class=zoom> <strong>&#163;500k &#8212;</strong> </p>
+            </div>
+            <div id="e">
+                <p class=zoom> <strong>&#163;1m &#8212;</strong> </p>
+            </div>
+        </div>
+        <!-- End initial-->
 
-function entities(e) {
-	node.each(moveToEnts(e.alpha));
+        <!-- Public or private money annotations -->
+        <div id="view-source-type">
+            <div id="public-or-private-money"  class="public-private"> 
+                <h3 class=zoom2>Public money vs private cash</h3>
+                <p class=zoom>Despite general public opposition to more taxpayer money being given to political parties, public funds are already provided to opposition parties in the form of 'short money' from the House of Commons, House of Lords and Scottish Parliament.</p>
+                <p class=zoom>The parties also benefit from 'Policy development grants' given by the Electoral Commission.</p>         
+            </div>              
+<!-- Paradoteo3: I put "<p>" on every "<strong>" so that it can use the class zoom. The "<strong class=zoom>" doesn't work.--> 
+            <div id="public-or-private-money-split" class="public-private">
+                <div id="private-money">
+                    <h5 class=zoom>Private Donations</h5>
+                    <p class=zoom > <strong> Total: &#163;89,752,524 </strong> </p>
+                    <p class=zoom >Proportion of all donations:</p> 
+                    <p class=zoom > <strong> 77% </strong> </p>
+                </div>
+                <div id="public-money">
+                    <h5 class=zoom>Public Funds</h5>
+                    <p class=zoom> <strong>Total: &#163;26,579,038 </strong> </p>
+                            <p class=zoom>Proportion of all donations: </p>
+                                <p class=zoom> <strong> 23% </strong> </p>
+                </div>
+          </div>
+        </div>
+        <!-- End public or private money -->
+       
+        <div id="view-party-type">
+            <h3 class=zoom2>Income for each party from private sources.</h3>
+            <div id="conservative">
+                <h5 class=zoom>Conservative Party</h5>
+                <p class=zoom> <strong>Total: &#163;43.7 million 
+                    </strong> </p>
+                        <p class=zoom>Top 50 donors gave:
+                            <strong>&#163;23,329,828</strong>
+                            <br>
+                            <strong>50%</strong>of the total.</p>
+                        <p class=zoom>Top 10 donors gave:
+                            <strong>&#163;12,877,989</strong>
+                            <br>
+                            <strong>27%</strong>of the total</p>
+            </div>
+            <div id="labour">
+                <h5 class=zoom>Labour Party</h5>
+                <p class=zoom> <strong>Total: &#163;38.9 million
+                    </strong> </p>
+                        <p class=zoom>Top 50 donors gave:
+                            <strong>&#163;39,196,684</strong>
+                            <br>
+                            <strong>92%</strong>of the total.</p>
+                        <p class=zoom>Top 10 donors gave:
+                            <strong>&#163;34,715,877</strong>
+                            <br>
+                            <strong>81%</strong>of the total</p>
+            </div>
+            <div id="libdem">
+                <h5 class=zoom2>Liberal Democrats</h5>
+                <p class=zoom> <strong>Total: &#163;7.1 million </strong> </p>
+                    
+                        <p class=zoom>Top 50 donors gave:
+                            <strong>&#163;6,975,973</strong>
+                            <br>
+                            <strong>63%</strong>of the total.</p>
+                        <p class=zoom>Top 10 donors gave:
+                            <strong>&#163;4,823,899.71</strong>
+                            <br>
+                            <strong>43%</strong>of the total</p>
+            </div>
+        </div>    
+        <div id="view-donor-type">
+            <div id="individual">
+                <h5 class=zoom>Individuals</h5>
+                <p class=zoom> <strong>Total: &#163; 35,191,222
+                    </strong> </p>
+                        <p class=zoom>Proportion of all donations:
+                            <strong>39%</strong>
+                        </p>
+            </div>
+            <div id="company">
+                <h5 class=zoom>Companies</h5>
+                <p class=zoom> <strong>Total: &#163; 17,052,129
+                    </strong> </p>
+                        <p class=zoom>Proportion of all donations:
+                            <strong>19%</strong>
+                        </p>
+            </div>
+            <div id="union">
+                <h5 class=zoom>Trade Unions</h5>
+                <p class=zoom> <strong>Total: &#163;31,474,649
+                    </strong> </p>
+                        <p class=zoom>Proportion of all donations:
+                            <strong>35%</strong>
+                        </p>
+            </div>
+            <div id="society">
+                <h5 class=zoom2>Societies</h5>
+                <p class=zoom2> <strong>Total: &#163;4,550,129
+                    </strong> </p>
+                        <p class=zoom2>Proportion of all donations:
+                            <strong>5%</strong>
+                        </p>
+            </div>
+            <div id="other">
+                <h5 class=zoom2>Others</h5>
+                <p class=zoom2> <strong>Total: &#163; 1,484,395
+                    </strong> </p>
+                        <p class=zoom2>Proportion of all donations:
+                            <strong>2%</strong>
+                        </p>
+            </div>
+         </div>  
+           <!--paradoteo3: The view/appearance of the new split by-->
+         <div id="view-amount-type">  
+              <div id="amount4">
+                 <h2 class=zoom>Amount of donation</h2>
+              </div>   
+              <div id="amount1">
+                  <h5 class=zoom> Up to 50.000 British Pounds </h5>
+             </div>
+             <div id="amount2">
+                 <h5 class=zoom> Up to 350.000 British Pounds </h5>
+             </div>
+             <div id="amount3">    
+                 <h5 class=zoom> Up to 20.000.000 British Pounds </h5>
+             </div> 
+        </div>       
+    </div>
 
-		node.attr("cx", function(d) { return d.x; })
-			.attr("cy", function(d) {return d.y; });
-}
-
-function types(e) {
-	node.each(moveToFunds(e.alpha));
-
-
-		node.attr("cx", function(d) { return d.x; })
-			.attr("cy", function(d) {return d.y; });
-}
-
-function all(e) {
-	node.each(moveToCentre(e.alpha))
-		.each(collide(0.001));
-
-		node.attr("cx", function(d) { return d.x; })
-			.attr("cy", function(d) {return d.y; });
-}
-
-
-function moveToCentre(alpha) {
-	return function(d) {
-		var centreX = svgCentre.x + 75;
-			if (d.value <= 25001) {
-				centreY = svgCentre.y + 75;
-			} else if (d.value <= 50001) {
-				centreY = svgCentre.y + 55;
-			} else if (d.value <= 100001) {
-				centreY = svgCentre.y + 35;
-			} else  if (d.value <= 500001) {
-				centreY = svgCentre.y + 15;
-			} else  if (d.value <= 1000001) {
-				centreY = svgCentre.y - 5;
-			} else  if (d.value <= maxVal) {
-				centreY = svgCentre.y - 25;
-			} else {
-				centreY = svgCentre.y;
-			}
-
-		d.x += (centreX - d.x) * (brake + 0.06) * alpha * 1.2;
-		d.y += (centreY - 100 - d.y) * (brake + 0.06) * alpha * 1.2;
-	};
-}
-
-function moveToParties(alpha) {
-	return function(d) {
-		var centreX = partyCentres[d.party].x + 50;
-		if (d.entity === 'pub') {
-			centreX = 1200;
-		} else {
-			centreY = partyCentres[d.party].y;
-		}
-
-		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
-		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
-	};
-}
-
-function moveToEnts(alpha) {
-	return function(d) {
-		var centreY = entityCentres[d.entity].y;
-		if (d.entity === 'pub') {
-			centreX = 1200;
-		} else {
-			centreX = entityCentres[d.entity].x;
-		}
-
-		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
-		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
-	};
-}
-
-function moveToFunds(alpha) {
-	return function(d) {
-		var centreY = entityCentres[d.entity].y;
-		var centreX = entityCentres[d.entity].x;
-		if (d.entity !== 'pub') {
-			centreY = 300;
-			centreX = 350;
-		} else {
-			centreX = entityCentres[d.entity].x + 60;
-			centreY = 380;
-		}
-		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
-		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
-	};
-}
-
-// Collision detection function by m bostock
-function collide(alpha) {
-  var quadtree = d3.geom.quadtree(nodes);
-  return function(d) {
-    var r = d.radius + radius.domain()[1] + padding,
-        nx1 = d.x - r,
-        nx2 = d.x + r,
-        ny1 = d.y - r,
-        ny2 = d.y + r;
-    quadtree.visit(function(quad, x1, y1, x2, y2) {
-      if (quad.point && (quad.point !== d)) {
-        var x = d.x - quad.point.x,
-            y = d.y - quad.point.y,
-            l = Math.sqrt(x * x + y * y),
-            r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
-        if (l < r) {
-          l = (l - r) / l * alpha;
-          d.x -= x *= l;
-          d.y -= y *= l;
-          quad.point.x += x;
-          quad.point.y += y;
-        }
-      }
-      return x1 > nx2
-          || x2 < nx1
-          || y1 > ny2
-          || y2 < ny1;
-    });
-  };
-}
-
-function display(data) {
-
-	maxVal = d3.max(data, function(d) { return d.amount; });
-
-	var radiusScale = d3.scale.sqrt()
-		.domain([0, maxVal])
-			.range([10, 20]);
-
-	data.forEach(function(d, i) {
-		var y = radiusScale(d.amount);
-		var node = {
-				radius: radiusScale(d.amount) / 5,
-				value: d.amount,
-				donor: d.donor,
-				party: d.party,
-				partyLabel: d.partyname,
-				entity: d.entity,
-				entityLabel: d.entityname,
-				color: d.color,
-				x: Math.random() * w,
-				y: -y
-      };
-			
-      nodes.push(node)
-	});
-
-	console.log(nodes);
-
-	force = d3.layout.force()
-		.nodes(nodes)
-		.size([w, h]);
-
-	return start();
-}
-
-function mouseover(d, i) {
-	// tooltip popup
-	var mosie = d3.select(this);
-	var amount = mosie.attr("amount");
-	var donor = d.donor;
-	var party = d.partyLabel;
-	var entity = d.entityLabel;
-	var offset = $("svg").offset();
-	var infoBox = "<p> Source: <b>" + donor + "</b></p>"
-								+ "<p> Recipient: <b>" + party + "</b></p>"
-								+ "<p> Type of donor: <b>" + entity + "</b></p>"
-								+ "<p> Total value: <b>&#163;" + comma(amount) + "</b></p>";
-
-
-	mosie.classed("active", true);
-	d3.select(".tooltip")
-  	.style("left", (parseInt(d3.select(this).attr("cx") - 80) + offset.left) + "px")
-    .style("top", (parseInt(d3.select(this).attr("cy") - (d.radius+150)) + offset.top) + "px")
-		.html(infoBox)
-			.style("display","block");
-	}
-
-function mouseout() {
-	// no more tooltips
-		var mosie = d3.select(this);
-
-		mosie.classed("active", false);
-
-		d3.select(".tooltip")
-			.style("display", "none");
-		}
+<div id="chart"></div>
 
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+    window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js" charset="utf-8"></script>
+    <script src="chart.js"></script>
+</body>
 
-$(document).ready(function() {
-		d3.selectAll(".switch").on("click", function(d) {
-      var id = d3.select(this).attr("id");
-      return transition(id);
-    });
-    return d3.csv("data/7500up.csv", display);
-
-});
-
-
+</html>
