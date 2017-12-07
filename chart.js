@@ -1,4 +1,3 @@
-// GLOBALS
 var w = 1000,h = 900;
 var padding = 2;
 var nodes = [];
@@ -49,7 +48,7 @@ function transition(name) {
 		$("#view-source-type").fadeOut(250);
 		$("#view-party-type").fadeOut(250);
 		return total();
-		//location.reload();
+
 	}
 	if (name === "group-by-party") {
 		$("#initial-content").fadeOut(250);
@@ -86,16 +85,11 @@ function start() {
 		.attr("donor", function(d) { return d.donor; })
 		.attr("entity", function(d) { return d.entity; })
 		.attr("party", function(d) { return d.party; })
-		// disabled because of slow Firefox SVG rendering
-		// though I admit I'm asking a lot of the browser and cpu with the number of nodes
-		//.style("opacity", 0.9)
 		.attr("r", 0)
 		.style("fill", function(d) { return fill(d.party); })
 		.on("mouseover", mouseover)
 		.on("mouseout", mouseout);
-		// Alternative title based 'tooltips'
-		// node.append("title")
-		//	.text(function(d) { return d.donor; });
+		
 
 		force.gravity(0)
 			.friction(0.75)
@@ -241,7 +235,6 @@ function moveToFunds(alpha) {
 	};
 }
 
-// Collision detection function by m bostock
 function collide(alpha) {
   var quadtree = d3.geom.quadtree(nodes);
   return function(d) {
@@ -330,7 +323,7 @@ function mouseover(d, i) {
 	}
 
 function mouseout() {
-	// no more tooltips
+	
 		var mosie = d3.select(this);
 
 		mosie.classed("active", false);
@@ -347,5 +340,4 @@ $(document).ready(function() {
     return d3.csv("data/7500up.csv", display);
 
 });
-
 
