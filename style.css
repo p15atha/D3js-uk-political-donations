@@ -1,11 +1,126 @@
 body {
     background-color: #ffffff;
     font-family:'Raleway', 'Open Sans', sans-serif;
-    
 }
 p {
     margin: 5px 0;
+    -webkit-transition: all 0.1s ease-out;
 }
+
+/*h1,h2,h3,h4,h5,p,strong,a, pre
+ evala functionality gia zoom */
+ 
+ /*Otan ginete hover tu mouse panw apo to sygkekrimeno element (px h1,p...) 
+  *Tote orizw to xrwma se kitrino
+  *Vazw perigramma gyrw apo to kathe gramma thetontas tis rythmhseis text-shadow:
+  *To kanw gia na ksexwrizw ta grammata me to background
+  *
+  *Epishs gia to zoom out thetw kathe element me transition 0.1 deuterolepton ease-out
+  */
+h1 {
+  display: inline-block;
+  -webkit-transition: all 0.1s ease-out;
+}
+
+h1:hover {
+  color: yellow;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  cursor: pointer;
+  -webkit-transform: scale(1.5);
+}
+
+
+h2 {
+  display: inline-block;
+  -webkit-transition: all 0.1s ease-out;
+}
+
+h2:hover {
+  color: yellow;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  cursor: pointer;
+  -webkit-transform: scale(1.5);
+}
+
+
+h3 {
+  display: inline-block;
+  -webkit-transition: all 0.1s ease-out;
+}
+
+h3:hover {
+  color: yellow;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  cursor: pointer;
+  -webkit-transform: scale(1.5);
+}
+
+
+h4 {
+  display: inline-block;
+  -webkit-transition: all 0.1s ease-out;
+}
+
+h4:hover {
+  color: yellow;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  cursor: pointer;
+  -webkit-transform: scale(1.5);
+}
+
+
+h5 {
+  display: inline-block;
+  -webkit-transition: all 0.1s ease-out;
+}
+
+h5:hover {
+  color: yellow;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  cursor: pointer;
+  -webkit-transform: scale(1.5);
+}
+
+pre:hover {
+  color: yellow;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  cursor: pointer;
+  -webkit-transform: scale(1.5);
+}
+
+p:hover {
+  color: yellow;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  cursor: pointer;
+  -webkit-transform: scale(1.5);
+}
+
+
+strong {
+  display: inline-block;
+  -webkit-transition: all 0.1s ease-out;
+}
+
+strong:hover {
+  color: yellow;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  cursor: pointer;
+  -webkit-transform: scale(1.5);
+}
+
+a {
+  display: inline-block;
+  -webkit-transition: all 0.1s ease-out;
+}
+
+a:hover {
+  color: yellow;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  cursor: pointer;
+  -webkit-transform: scale(1.5);
+}
+
+
 strong {
     font-weight: 700;
 }
@@ -22,14 +137,12 @@ li {
 
 /* 	Information boxes for different chart layouts */
 /* Positioning */
-
-#initial-content, #a, #b, #c, #d, #e, #f, #view-party-type, #view-donor-type, #view-source-type, #partyInfo, #conservative, #labour, #libdem, #individual, #company, #union, #society, #other, #public-or-private-money, #public-or-private-money-split, #private-money, #public-money { 
+#initial-content, #a, #b, #c, #d, #e, #f, #view-by-amount, #enormous, #huge, #large, #normal, #minor,#view-party-type, #view-donor-type, #view-source-type, #partyInfo, #conservative, #labour, #libdem, #individual, #company, #union, #society, #other, #public-or-private-money, #public-or-private-money-split, #private-money, #public-money { 
     position: absolute; 
 }
 
-/* Paradoteo 3 - Important reference of #view-amount-type, so that it wont appear when the page is loaded*/
 /* Initial appearance on load */
-#view-party-type, #view-donor-type, #view-source-type, #view-amount-type {
+#view-party-type, #view-donor-type, #view-source-type, #view-by-amount {
     display: none;
 }
 
@@ -42,30 +155,7 @@ li {
     left: 650px;
     width: 272px;
 }
-/* Paradoteo 3 - Important reference of #view-amount-type and amount 1, 2, 3,4 so that the text will appear with the current specific way*/
-#view-amount-type {
-    height: 100%;
-}
-#amount1 {
-    left: 150px;
-    top: 230px;
-    position: absolute;
-}
-#amount2 {
-    left: 425px;
-    top: 265px;
-    position: absolute; 
-}
-#amount3 {
-    left: 700px;
-    top: 300px;
-    position: absolute; 
-}
-#amount4 {
-    top: 120px;
-    left: 425px;
-    position: absolute;
-}
+
 
 /*  Public or private funds view */
 
@@ -87,19 +177,19 @@ li {
     left: 610px;
 }
 
-/*  Party view / Split by party*/
+/*  Party view */
 #conservative, #labour, #libdem { padding: 10px; }
 #conservative {
-    background: rgba(62, 88, 89, 1);      /*xroma sto deksi plaisio "Conservative Party"*/
+    background: rgba(255, 0, 0, 0.5);
     top: 110px;
 }
-#labour {   
-    background: rgba(136, 253, 58, 1);   /*xroma sto deksi plaisio "Labour Party"*/
+#labour {
+    background: rgba(0, 255 , 0, 1);
     top: 330px;
 }
 #libdem {
-    background: rgba(277, 80, 34, 0.5);  /*xroma sto deksi plaisio "Liberal Democrats"*/
-    top: 550px;
+    background: rgba(0, 0, 255, 0.5);
+    top: 550px; 
 }
 
 /*	Donor type layout */
@@ -128,6 +218,35 @@ li {
     text-align: right;
     right: 0
 }
+/*Prosthikh twn thesewn olwn ton element tu Split By Amount*/
+/*type-a view layout*/
+#view-by-amount {
+    height: 100%;
+    left: 450px;
+    width: 370px;
+}
+#enormous {
+    top: 55px;
+}
+#huge {
+    top: 185px;
+    left: 30px;
+}
+#large {
+    top: 335px;
+    left: -40px;
+}
+#normal {
+    top: 470px;
+    left: 55px;
+}
+#minor {
+    top: 570px;
+    left: -55px;
+}
+
+
+
 
 /* Value scale */
 
@@ -179,13 +298,13 @@ circle.active {
     margin: 0.2em;
 }
 .lab {
-    fill: #F02233;
+    fill: #008000; /*change to green*/
 }
 .lib {
-    fill: #FDBB30;
+    fill: #0000FF; /*change to blue*/
 }
 .con {
-    fill: #087FBD;
+    fill: #FF0000; /*change to red*/
 }
 .snp {
     fill: #C9C945;
@@ -228,7 +347,7 @@ https://github.com/yui/pure/blob/master/LICENSE.md
     padding: 0.5em 1.5em 0.5em;
     color: #444;
     /* rgba not supported (IE 8) */
-    color: rgba(0, 0, 0, 0.80);
+    color: rgba(0, 0, 0, 0.8);
     /* rgba supported */
     *color: #444;
     /* IE 6 & 7 */
