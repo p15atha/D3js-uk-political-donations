@@ -1,3 +1,4 @@
+// GLOBALS
 var w = 1000,h = 900;
 var padding = 2;
 var nodes = [];
@@ -20,7 +21,10 @@ var entityCentres = {
 		individual: {x: w / 3.65, y: h / 3.3},
 	};
 
-var fill = d3.scale.ordinal().range(["#F02233", "#087FBD", "#FDBB30"]);
+//allagei twn fill scale
+var fill = d3.scale.ordinal().range(["#9ACD32", "#FFA500", "#DDA0DD"]);
+
+
 
 var svgCentre = { 
     x: w / 3.6, y: h / 2
@@ -48,7 +52,7 @@ function transition(name) {
 		$("#view-source-type").fadeOut(250);
 		$("#view-party-type").fadeOut(250);
 		return total();
-
+		//location.reload();
 	}
 	if (name === "group-by-party") {
 		$("#initial-content").fadeOut(250);
@@ -85,11 +89,28 @@ function start() {
 		.attr("donor", function(d) { return d.donor; })
 		.attr("entity", function(d) { return d.entity; })
 		.attr("party", function(d) { return d.party; })
+		// disabled because of slow Firefox SVG rendering
+		// though I admit I'm asking a lot of the browser and cpu with the number of nodes
+		//.style("opacity", 0.9)
 		.attr("r", 0)
-		.style("fill", function(d) { return fill(d.party); })
+		//Analoga to onoma d.party orizete to xrwma
+		.style("fill", function(d) { 
+			if(d.party == "con"){
+			   return fill("#FFA500"); //orange
+		   	}
+			else if (d.party == "lab") {
+			   return fill("#9ACD32"); //yellow green
+			}
+			else if(d.party == "lib") {
+			   return fill("#DDA0DD"); //plum
+			}
+			
+		})
 		.on("mouseover", mouseover)
 		.on("mouseout", mouseout);
-		
+		// Alternative title based 'tooltips'
+		// node.append("title")
+		//	.text(function(d) { return d.donor; });
 
 		force.gravity(0)
 			.friction(0.75)
@@ -235,6 +256,7 @@ function moveToFunds(alpha) {
 	};
 }
 
+// Collision detection function by m bostock
 function collide(alpha) {
   var quadtree = d3.geom.quadtree(nodes);
   return function(d) {
@@ -283,7 +305,9 @@ function display(data) {
 				partyLabel: d.partyname,
 				entity: d.entity,
 				entityLabel: d.entityname,
-				color: d.color,
+				//Den xreiazete h parakatw gramh
+				//giati orizw to xrwma sth start function
+				//color: d.color,
 				x: Math.random() * w,
 				y: -y
       };
@@ -323,7 +347,7 @@ function mouseover(d, i) {
 	}
 
 function mouseout() {
-	
+	// no more tooltips
 		var mosie = d3.select(this);
 
 		mosie.classed("active", false);
@@ -340,4 +364,5 @@ $(document).ready(function() {
     return d3.csv("data/7500up.csv", display);
 
 });
+
 
